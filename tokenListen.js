@@ -5,7 +5,7 @@ const { abi } = require('./abis/usdcTestToken.json')
 
 const usdcAddress = "0xc493e7373757C759cf589731eE1cFaB80b13Ed7a";
 
-const provider = new ethers.JsonRpcProvider('https://eth-sepolia.g.alchemy.com/v2/demo');
+const provider = new ethers.JsonRpcProvider(process.env.NEXT_PUBLIC_SEPOLIA_RPC_URL || 'https://eth-sepolia.g.alchemy.com/v2/demo');
 const usdcToken = new ethers.Contract(usdcAddress, abi, provider);
 
 const tokenListen = async () => {
