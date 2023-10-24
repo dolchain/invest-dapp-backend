@@ -7,8 +7,15 @@ const supabaseAdmin = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY || ''
 );
 
+
 const Transfered = async (txHash, from, to, amount) => {
   if (from == null || to == null || amount == null) return;
+
+  const { data: centralWallet } = await supabaseAdmin
+  .from('config')
+  .select('value')
+  .eq('key', "central_wallet")
+  .single();
 
   let action = null;
 
@@ -21,7 +28,7 @@ const Transfered = async (txHash, from, to, amount) => {
       .single();
     if(userDetail != null && userDetail != undefined){  
       action = 'deposit'
-      if(from == process.env.CENTRAL_WALLET_ADDRESS)
+      if(from == centralWallet.value)
         action = 'uninvest'
       const newUserDetail = {
         ...userDetail,
@@ -48,7 +55,7 @@ const Transfered = async (txHash, from, to, amount) => {
     if(userDetail != null && userDetail != undefined){
       action = 'withdraw'
       // If receiver address is central wallet (invest)
-      if(to == process.env.CENTRAL_WALLET_ADDRESS)
+      if(to == centralWallet.value)
         action = 'invest'
 
       const profileData = {
