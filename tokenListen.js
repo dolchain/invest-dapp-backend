@@ -4,7 +4,7 @@ const {Transfered} = require('./supabase')
 // Setup Contract
 const { abi } = require('./abis/usdcTestToken.json')
 
-const usdcAddress = "0xc493e7373757C759cf589731eE1cFaB80b13Ed7a";
+const usdcAddress = process.env.USDC_TOKEN_ADDRESS;
 
 const provider = new ethers.WebSocketProvider(`wss://side-dawn-shape.ethereum-sepolia.quiknode.pro/${process.env.SEPOLIA_RPC_QUICKNODE_ID}/`);
 // const provider = new ethers.JsonRpcProvider(process.env.SEPOLIA_RPC_URL || 'https://eth-sepolia.g.alchemy.com/v2/demo');
