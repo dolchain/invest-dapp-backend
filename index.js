@@ -6,6 +6,10 @@ const ethers = require('ethers');
 const { Transfered } = require('./supabase');
 app.use(express.json());
 
+app.get('/*', async (req, res) => {
+  res.json({ message: 'Welcome' });
+});
+
 app.post('/*', async (req, res) => {
   try {
     if (!req.body?.confirmed)
@@ -24,6 +28,7 @@ app.post('/*', async (req, res) => {
         );
         res.json({ message: 'succeed' });
       });
+    else res.json({ message: 'failed' });
   } catch (err) {
     console.log('Error:', req.body);
     res.json({ message: 'failed' });
