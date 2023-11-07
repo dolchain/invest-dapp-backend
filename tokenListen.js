@@ -4,7 +4,10 @@ const { Transfered } = require('./supabase');
 // Setup Contract
 const { abi } = require('./abis/usdcTestToken.json');
 
-const usdcAddress = process.env.USDC_TOKEN_ADDRESS;
+const usdcAddress =
+  process.env.NODE_ENV === 'development'
+    ? process.env.MOC_USDC_TOKEN_ADDRESS
+    : process.env.USDC_TOKEN_ADDRESS;
 
 console.log(process.env.NODE_ENV);
 const provider =
@@ -24,7 +27,12 @@ const tokenListen = async () => {
       // console.log('Event Fired:', event);
       amount = parseFloat(ethers.formatUnits(value, 6));
       if (amount >= 10000) console.log('Parameters:', from, to, amount);
-      Transfered(event.log.transactionHash, from, to, amount);
+      Transfered(
+        event.log.transactionHash,
+        from.toLowerCase(),
+        to.toLowerCase(),
+        amount
+      );
     });
   } catch (error) {
     console.error('Error setting up event listener:', error);
